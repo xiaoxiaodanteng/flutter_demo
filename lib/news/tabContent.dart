@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toutiao/module/article.dart';
 import 'package:toutiao/module/pub.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class TabContent extends StatefulWidget {
   final int id;
@@ -38,18 +39,75 @@ class _TabContentState extends State<TabContent> {
           'autName': '麻子2',
           'commCount': 676
         },
+        {
+          'artId': 2,
+          'title': '发放是23423',
+          'autId': 2,
+          'autName': '麻子2',
+          'commCount': 676
+        },
+        {
+          'artId': 2,
+          'title': '发放是23423',
+          'autId': 2,
+          'autName': '麻子2',
+          'commCount': 676
+        },
+        {
+          'artId': 2,
+          'title': '发放是23423',
+          'autId': 2,
+          'autName': '麻子2',
+          'commCount': 676
+        },
+        {
+          'artId': 2,
+          'title': '发放是23423',
+          'autId': 2,
+          'autName': '麻子2',
+          'commCount': 676
+        },
+        {
+          'artId': 2,
+          'title': '发放是23423',
+          'autId': 2,
+          'autName': '麻子2',
+          'commCount': 676
+        },
+        {
+          'artId': 2,
+          'title': '发放是23423',
+          'autId': 2,
+          'autName': '麻子2',
+          'commCount': 676
+        },
+        {
+          'artId': 2,
+          'title': '发放是23423',
+          'autId': 2,
+          'autName': '麻子2',
+          'commCount': 676
+        },
+        {
+          'artId': 2,
+          'title': '发放是23423',
+          'autId': 2,
+          'autName': '麻子2',
+          'commCount': 676
+        },
       ];
       _data = dataDemo.map((value) => Article.fromJson(value)).toList();
+      // _data.addAll(_data);
       print(_data);
     });
   }
 
   // 刷新
-  Future _refresh () {
-    setState(() {
-      
-    });
+  Future _refresh () async{
+    _getData();
   }
+  // 上拉加载更多
+  ScrollController _controller = ScrollController();
 
   @override
   void initState() {
@@ -57,6 +115,15 @@ class _TabContentState extends State<TabContent> {
     super.initState();
     // print(widget.id);
     _getData();
+
+    _controller.addListener(() {
+      var maxScroll = _controller.position.maxScrollExtent;
+      var pixel = _controller.position.pixels;
+      if (maxScroll == pixel) {
+        // 刷新
+        _getData();
+      }
+    });
   }
 
   @override
@@ -70,6 +137,7 @@ class _TabContentState extends State<TabContent> {
           itemBuilder: (context, index) {
             return NewsItem(_data[index]);
           },
+          controller: _controller,
         )
       ),
     );
@@ -79,6 +147,7 @@ class _TabContentState extends State<TabContent> {
 class NewsItem extends StatelessWidget {
   final Article article;
   NewsItem(this.article);
+  
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -114,7 +183,7 @@ class NewsItem extends StatelessWidget {
               )
             ),
             TextSpan(
-              text: '1小时前',
+              text: timeago.format(new DateTime.now(), locale: 'zh_CN'),
               style: TextStyle(
                 color: Colors.grey
               )
